@@ -1,0 +1,264 @@
+@import "tailwindcss";
+
+:root {
+  --red: #ff3838;
+  --yellow-card: #ffaf40;
+  --green: #32ff7e;
+  --blue: #18dcff;
+  --purple: #7d5fff;
+}
+
+* {
+  box-sizing: border-box;
+  user-select: none;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: radial-gradient(circle at center, #1e2230 0%, #0c0e14 100%);
+  color: #fff;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+h1 {
+  margin: 0 0 5px 0;
+  font-size: 1.8rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  background: linear-gradient(45deg, #ff3838, #ffaf40, #32ff7e, #18dcff, #7d5fff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+}
+
+/* THÔNG TIN PHÒNG HIỂN THỊ TRÊN CÙNG */
+#room-info-badge {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 4px 16px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  margin-bottom: 10px;
+  display: flex;
+  gap: 15px;
+  color: #18dcff;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(8px);
+}
+
+/* BÀN CHƠI DẠNG THẢM TÂM */
+#game-board {
+  position: relative;
+  width: 100%;
+  max-width: 900px;
+  height: min(540px, 75vh);
+  background: rgba(25, 28, 42, 0.75);
+  border-radius: 20px;
+  border: 2px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 0 30px rgba(125, 95, 255, 0.15), inset 0 0 40px rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(10px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* KHU VỰC TRUNG TÂM (CENTER MAT) */
+.center-mat {
+  position: absolute;
+  width: 320px;
+  height: 200px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
+  border-radius: 16px;
+  border: 2px dashed rgba(255, 255, 255, 0.22);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+/* KHU VỰC CÁC NGƯỜI CHƠI (4 HƯỚNG) */
+.player-slot {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.player-slot.top { top: 15px; }
+.player-slot.bottom { bottom: 15px; }
+.player-slot.left { left: 20px; }
+.player-slot.right { right: 20px; }
+
+/* BẢNG THÔNG TIN NGƯỜI CHƠI */
+.player-tag {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(90deg, rgba(255,255,255,0.15), rgba(255,255,255,0.05));
+  padding: 5px 12px 5px 6px;
+  border-radius: 30px;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+  transition: all 0.3s;
+}
+
+.player-tag.active {
+  border-color: #32ff7e;
+  box-shadow: 0 0 20px rgba(50, 255, 126, 0.6);
+  background: rgba(50, 255, 126, 0.2);
+  transform: scale(1.05);
+}
+
+/* AVATAR MẶC ĐỊNH RỖNG */
+.avatar-container {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  background: #2b2e3e;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.avatar-default-icon {
+  width: 22px;
+  height: 22px;
+  color: #a0a5b5;
+}
+
+.player-name {
+  font-size: 0.9rem;
+  font-weight: bold;
+  color: #fff;
+}
+
+.card-count-badge {
+  background: #ff3838;
+  color: white;
+  font-weight: bold;
+  font-size: 0.8rem;
+  padding: 2px 8px;
+  border-radius: 12px;
+  margin-left: 4px;
+}
+
+/* TAY BÀI XẾP RỘNG RÃI - TÁCH CÁC LÁ BÀI RÕ RÀNG */
+.hand-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 100%;
+  padding: 10px 14px 14px 14px;
+  overflow-x: auto;
+  overflow-y: visible;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.25) transparent;
+}
+
+.hand-container::-webkit-scrollbar {
+  height: 6px;
+}
+
+.hand-container::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.25);
+  border-radius: 999px;
+}
+
+.hand-container > div {
+  margin-left: -12px;
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), z-index 0.1s ease;
+  flex-shrink: 0;
+}
+
+@media (min-width: 640px) {
+  .hand-container > div {
+    margin-left: -15px;
+  }
+}
+
+.hand-container > div:first-child {
+  margin-left: 0 !important;
+}
+
+.hand-container > div:hover {
+  z-index: 70 !important;
+  transform: translateY(-18px) scale(1.06);
+}
+
+/* KHU VỰC THÔNG BÁO GIAO DIỆN */
+#status-bar {
+  position: absolute;
+  bottom: 160px;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 6px 20px;
+  border-radius: 20px;
+  font-weight: bold;
+  color: #ffaf40;
+  border: 1px solid rgba(255, 175, 64, 0.3);
+  letter-spacing: 0.5px;
+  z-index: 10;
+}
+
+.edit-btn {
+  background: rgba(255,255,255,0.2);
+  border: none;
+  color: #fff;
+  border-radius: 50%;
+  width: 22px; height: 22px;
+  cursor: pointer;
+  font-size: 0.7rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.edit-btn:hover {
+  background: rgba(255,255,255,0.35);
+}
+
+/* Custom animations & card styles */
+@keyframes card-deal {
+  0% { transform: scale(0.4) translateY(-80px); opacity: 0; }
+  100% { transform: scale(1) translateY(0); opacity: 1; }
+}
+
+.animate-card-deal {
+  animation: card-deal 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 20px rgba(50, 255, 126, 0.3); }
+  50% { box-shadow: 0 0 35px rgba(50, 255, 126, 0.7); }
+}
+
+.glow-active {
+  animation: pulse-glow 2s infinite ease-in-out;
+}
+
+/* Subtle Backrooms ambient flicker */
+@keyframes fluorescent-flicker {
+  0%, 100% { opacity: 0.98; }
+  92% { opacity: 0.98; }
+  93% { opacity: 0.85; }
+  94% { opacity: 0.98; }
+  96% { opacity: 0.9; }
+  97% { opacity: 0.98; }
+}
+
+.backrooms-ambient {
+  animation: fluorescent-flicker 8s infinite;
+}

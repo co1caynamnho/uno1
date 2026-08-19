@@ -1,0 +1,6 @@
+{
+  "name": "UNO Color Party",
+  "description": "Trò chơi UNO Color Party 2-4 người chơi Online Real-time qua phòng chơi với bàn chơi 4 hướng trực quan, phòng chờ, chat biểu cảm, tùy biến Avatar và âm thanh sống động.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
