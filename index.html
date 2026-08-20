@@ -15,4 +15,40 @@
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Game UNO</title>
+  <style>
+    /* 1. DÁN TOÀN BỘ CODE CSS VÀO ĐÂY */
+    /* (Mọi đoạn mã trang trí giao diện từ Google AI) */
+  </style>
+</head>
+<body>
 
+  <!-- 2. DÁN TOÀN BỘ CODE HTML VÀO ĐÂY -->
+  <!-- (Giao diện bàn chơi, các lá bài, nút bấm...) -->
+
+  <script>
+    // 3. DÁN TOÀN BỘ CODE JAVASCRIPT GAME VÀO ĐÂY
+    // (Toàn bộ logic chia bài, đánh bài từ Google AI)
+
+
+    // 4. DÁN THÊM HÀM LƯU ĐIỂM VÀO CUỐI MỤC SCRIPT NÀY
+    async function saveScoreToVercel(username, score) {
+      try {
+        const res = await fetch('/api/save-score', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, score })
+        });
+        const data = await res.json();
+        if (data.success) alert('Đã lưu điểm thành công!');
+      } catch (err) {
+        console.error('Lỗi lưu điểm:', err);
+      }
+    }
+  </script>
+</body>
+</html>
