@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Game Uno - Động</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; background: #f4f4f9; }
+    .box { background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; max-width: 400px; }
+    button { padding: 10px 15px; cursor: pointer; background: #0070f3; color: white; border: none; border-radius: 5px; }
+    ol { padding-left: 20px; }
+  </style>
+</head>
+<body>
+
+  <h1>🎴 Game Uno Online</h1>
+
+  <div class="box">
+    <h3>Kết thúc ván đấu</h3>
+    <input type="text" id="username" placeholder="Nhập tên người chơi..." />
+    <input type="number" id="score" placeholder="Nhập điểm số..." />
+    <button onclick="saveGameScore()">Lưu điểm lên Server</button>
+    <p id="status"></p>
+  </div>
+
+  <div class="box">
+    <h3>🏆 Bảng Xếp Hạng Top 10</h3>
+    <button onclick="loadLeaderboard()">Cập nhật Bảng xếp hạng</button>
+    <ol id="leaderboard-list"></ol>
+  </div>
+
+  <script>
+    async function saveGameScore() {
+      const username = document.getElementById('username').value;
+      const score = document.getElementById('score').value;
+      const status = document.getElementById('status');
+
+      if (!username || !score) {
+        alert('Vui lòng nhập đủ tên và điểm!');
+        return;
+      }
+
+      status.innerText = 'Đang lưu điểm...';
+
+      const res = await fetch('/api/save-score', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, score: Number(score) })
+      });
+
+      const data = await res.json();
+      if (res.ok) {
+        status.innerText = '✅ ' + data.message;
+        loadLeaderboard();
+      } else {
+        status.innerText = '❌ Lỗi: ' + data.error;
+      }
+    }
+
+    async function loadLeaderboard() {
+      const list = document.getElementById('leaderboard-list');
+      list.innerHTML = 'Đang tải...';
+
+      const res = await fetch('/api/leaderboard');
+      const data = await res.json();
+
+      list.innerHTML = '';
+      data.forEach(item => {
+        const li = document.createElement('li');
+        li.innerText = `${item.username}: ${item.score} điểm`;
+        list.appendChild(li);
+      });
+    }
+
+    loadLeaderboard();
+  </script>
+</body>
+</html>
